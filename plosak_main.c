@@ -20,9 +20,7 @@
  * Author : Filip
  */ 
 
-#include <avr/io.h>
-#include <stdbool.h>
-#include <avr/interrupt.h>
+#include "init.h"
 //kniznica vyuzita na USART komunikaciu
 #include "kniznica.h"
 
