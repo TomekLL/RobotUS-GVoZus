@@ -1,3 +1,6 @@
+#include "init.h"
+#include "USART.h"
+
 void setUSART(void)
 {
 	DDRD |=(1<<PD1); // Tx vystup
