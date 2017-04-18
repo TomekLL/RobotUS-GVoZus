@@ -16,13 +16,10 @@ int main(void)
 {
 	//zapnutie USART spojenia
 	setUSART();
-	//nastavenie vystupov na A (zapnutie vystupu pre ledky);
-	DDRA |= (1 << PA5) | (1 << PA6) | (1<< PA7);
-	//vypnutie lediek (nastavenie na 1 z dovodu invertovaneho systemu lediek)
-	sbi(PORTA,PA5);
-	sbi(PORTA,PA6);
-	sbi(PORTA,PA7);
-	//nekonecny cyklus
+	//aktivacia motorov
+	nastav();
+	//globalne povolenie prerusenia
+	sei();
 	while (1) 
 	{
 		//init hodnoty value
