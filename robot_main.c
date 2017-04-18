@@ -14,6 +14,10 @@
 
 int main(void)
 {
+	speed=100;
+	OCR0= CAS10;
+	TCCR0=REZIM;
+	TIMSK |=(1<<OCIE0);			// lokalne povolenie prerusenia
 	//zapnutie USART spojenia
 	setUSART();
 	//aktivacia motorov
@@ -22,36 +26,31 @@ int main(void)
 	sei();
 	while (1) 
 	{
-		//init hodnoty value
-		unsigned char value = 0;
-		//zobratie hodnoty z USART spojenia
-		value = USART_receive_1byte();
-		if(value == (unsigned char)8) {
+		if(value == (unsigned char)8) 
+		{
 			//8 = 0b00001000 (stredovy senzor je aktivovany)
-			//zapnutie lavej led 
-			cbi(PORTA,PA5);
-			//vypnutie pravej led a bzuciaku
-			sbi(PORTA,PA6);
-			sbi(PORTA,PA7);
-		} else if(value == (unsigned char)127) {
-			//127 = 0b01111111 (vsetky senzory su aktivne)
-			//zapnutie oboch led
-			cbi(PORTA,PA5);
-			cbi(PORTA,PA6);
-			//vypnutie bzuciaku
-			sbi(PORTA,PA7);
-		} else if(value == (unsigned char)0) {
-			//0 = 0b00000000 (ani jeden senzor nie je aktivny)
-			sbi(PORTA,PA6);
-			sbi(PORTA,PA5);
-			cbi(PORTA,PA7);
-		} else {
-			//pre pripad ze dostavame iny vysledok (ciara sa nachcadza na inom nez strednom senzore)
-			//vypnutie vsetkeho
-			sbi(PORTA,PA5);
-			sbi(PORTA,PA6);
-			sbi(PORTA,PA7);
-		}
+			go(0,speed);	//pravy
+			go(1,speed); //lavy
+		} 
+		else if(value == (unsigned char)4)
+			{
+				//4 = 0b00000100
+				go(0,speed-15);
+				go(1,speed);
+			}
+			else if(value == (unsigned char)16) 
+				{
+					//16 = 0b00010000
+					go(0,speed);
+					go(1,speed-15);
+				}
 	}
 }
-
+// 	prerusenie volane cca kazdych 30ms
+ISR(TIMER0_COP_vect)
+{
+	//init hodnoty value
+	unsigned char value = 0;
+	//zobratie hodnoty z USART spojenia
+	value = USART_receive_1byte();	
+}
