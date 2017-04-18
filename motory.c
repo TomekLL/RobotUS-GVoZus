@@ -25,22 +25,16 @@ void go(uint8_t motor, int rychlost)
 	uint8_t m = motor;
 	uint8_t r = rychlost;
 	if(m==0)		// motor A
-	{
-		if (r>=0)
-		{					
+	{					
 			PORTD |=(1<<PD6);	//nuluj PD6 SMER_A dopredu
 			if(r>255)r = 255;
 			OCR1A = r;			//MOTOR_A
-		} 
 	}
 	if(m==1)		// motor B
 	{
-		r+25;
-		if ()
-		{		
-			PORTD |=(1<<PD7);	//nuluj PD7 SMER_B dopredu
-			if(r>255)r = 255;
-			OCR1B=r;			//MOTOR_B
-		}
+		r=r+25;	
+		PORTD |=(1<<PD7);	//nuluj PD7 SMER_B dopredu
+		if(r>255)r = 255;
+		OCR1B=r;			//MOTOR_B
 	}
 }
