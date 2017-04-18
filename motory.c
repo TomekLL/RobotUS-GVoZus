@@ -1,5 +1,3 @@
-#include "motory.h"
-
 void nastav()
 {
 	DDRD |=(1<<PD4)|(1<<PD5); 
