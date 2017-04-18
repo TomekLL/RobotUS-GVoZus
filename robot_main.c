@@ -12,7 +12,8 @@
 
 #include "init.h"
 //kniznica obsahujuca USART spojenie
-#include "kniznica.h"
+#include "USART.h"
+#include "motory.h"
 
 int main(void)
 {
