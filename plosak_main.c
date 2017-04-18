@@ -32,17 +32,12 @@ int main(void) {
 
 	// pociatocna svetelna sekvencia na overenie USART portu
 	_delay_ms(25);
-	USART_send_1byte((unsigned char) 0);
-	_delay_ms(25);
 	USART_send_1byte((unsigned char) 8);
 	_delay_ms(25);
-	USART_send_1byte((unsigned char) 127);
+	USART_send_1byte((unsigned char) 4);
 	_delay_ms(25);
-	USART_send_1byte((unsigned char) 127);
+	USART_send_1byte((unsigned char) 16);
 	_delay_ms(25);
-	USART_send_1byte((unsigned char) 8);
-	_delay_ms(25);
-	USART_send_1byte((unsigned char) 0);
 
 	// nastavovanie delenia (nastavene pre 128)
 	ADCSRA |= 1<<ADPS2 | 1<<ADPS1 | 1<<ADPS0;
