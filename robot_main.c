@@ -11,6 +11,7 @@
  */ 
 
 #include "robot.h"
+#include "sonar.h"
 
 int main(void)
 {
@@ -51,6 +52,8 @@ ISR(TIMER0_COMP_vect)
 {
 	//init hodnoty value
 	unsigned char value = 0;
+	unsigned char distance = 0;
 	//zobratie hodnoty z USART spojenia
 	value = USART_receive_1byte();	
+	distance = read_sonar();
 }
