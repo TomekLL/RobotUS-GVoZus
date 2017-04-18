@@ -22,7 +22,7 @@
 
 #include "init.h"
 //kniznica vyuzita na USART komunikaciu
-#include "kniznica.h"
+#include "USART.h"
 
 //definovanie hranicnej hodnoty voltov (nie je x(hodnota) V ale pomer ku 5 voltom) 
 uint16_t LINE_VOLTAGE_MIN;
