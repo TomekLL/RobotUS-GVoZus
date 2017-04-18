@@ -7,3 +7,4 @@
 #define REZIM 0b00001101 //CTC rezim najpomalsie hodiny F_CPU/1024
 unsigned char speed;
 unsigned char distance;
+unsigned char value;
