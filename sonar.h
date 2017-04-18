@@ -1,13 +1,7 @@
 #ifndef SONAR_H_
 #define SONAR_H_
  
-#ifndef F_CPU
-    #define F_CPU 10000000UL     // CPU Frequency
-#endif
- 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
+#include "init.h"
  
 /*...- . . .-. --- -... --- -
  * Define Ports and Pins as required
