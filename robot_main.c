@@ -47,7 +47,7 @@ int main(void)
 	}
 }
 // 	prerusenie volane cca kazdych 30ms
-ISR(TIMER0_COP_vect)
+ISR(TIMER0_COMP_vect)
 {
 	//init hodnoty value
 	unsigned char value = 0;
