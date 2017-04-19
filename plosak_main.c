@@ -29,16 +29,6 @@ int main(void) {
 	voltageSet = 0;
 	// zakldane nastavenie hranicnej hodnoty (zaloha)
 	LINE_VOLTAGE_MIN = (uint16_t) 400;
-
-	// pociatocna svetelna sekvencia na overenie USART portu
-	_delay_ms(25);
-	USART_send_1byte((unsigned char) 8);
-	_delay_ms(25);
-	USART_send_1byte((unsigned char) 4);
-	_delay_ms(25);
-	USART_send_1byte((unsigned char) 16);
-	_delay_ms(25);
-
 	// nastavovanie delenia (nastavene pre 128)
 	ADCSRA |= 1<<ADPS2 | 1<<ADPS1 | 1<<ADPS0;
 	// nastavovanie zakladnej hodnoty admux  (bez toho aby sme poukazovali na port vstupu)
@@ -65,7 +55,6 @@ int main(void) {
 	// prazdny nekonecny cyklus
 	while(1) {
 	}
-	
 }
 /*
 *	prerusenie zavinene prijmom z ADC
@@ -76,44 +65,45 @@ ISR(ADC_vect) {
 	//ukladanie low hodnoty (spodne bity)
 	uint8_t low = ADCL;
 	//ukladanie celej hodnoty (hodnoty spodnych bitov spojene s hornymi)
-	uint16_t tenBit = ADCH << 8 | low;
+	tenBit = ADCH << 8 | low;
 
 	//vyhodnocovanie farby
 	if(svieti) {
 		if(voltageSet) {
 			//zapisanie hodnoty
-			value|=(getBool((uint16_t)((tenBit + checkingValue) / 2))<<(counter-1));
+			sendingValue|= ((getBool(getCheckingValue()))<<(counter-1));
 		} else {
 			//nastavovanie zakladnej hodnoty
 			if(counter == 1) {
 				//ziskavanie hodnoty pozadia z prveho cidla
-				voltageBackground = ((tenBit + checkingValue) / 2); 
+				voltageBackground = getCheckingValue(); 
 			} else if(counter == 4) {
 				//ziskavanie hodnoty ciary z stredneho cidla (cidlo cislo 4)
-				voltageForeground = ((tenBit + checkingValue) / 2);
-				LINE_VOLTAGE_MIN = (uint16_t)(voltageForeground);
+				voltageForeground = getCheckingValue();
+				LINE_VOLTAGE_MIN = (uint16_t)((voltageBackground + (voltageForeground - voltageBackground)/2));
 				voltageSet = 1;
 			}
 		}
-		//prechod na dalsii senzor
+		//prechod na dalsi senzor
 		counter++;
 		if(counter>7) {
 			//v pripade ze sme precitali vsetky senzory
 			counter = 1;
-			USART_send_1byte((unsigned char) value);
-			value &= 0;
+			//titi hje kbe= test
+			USART_send_1byte((unsigned char) sendingValue);
+			sendingValue = 0;
 			voltageSet = 1;
 		}
 		//nastavenie skenovanie na n-ty port kde n predstavuje counter
 		ADMUX = admux_base | counter;
 		//zhasnutie svetiel
-		PORTB|= (1<<PB4);
+		sbi(PORTB, PB4);
 		svieti = 0;
 	} else {
-		//nastavenie prechodnej hodnoty (temp)
+		//nastavenie prechodnej hodnoty (temp) (zatial neriesime)
 		checkingValue = 0; //nemyslim si ze priemerovanie hodnot je dobry napad len sa stracia presnost
 		//zapnutie svetiel
-		PORTB&= ~(1<<PB4);
+		cbi(PORTB, PB4);
 		svieti = 1;
 	}
 	//opatovne zacanie ADC ratania
@@ -127,5 +117,9 @@ ISR(ADC_vect) {
 */
 uint8_t getBool(uint16_t v) {
 	return v >= LINE_VOLTAGE_MIN;
+}
+uint16_t getCheckingValue() {
+	//return (uint16_6)((tenBit + checkingValue) / 2);
+	return (uint16_t)((tenBit));
 }
 
