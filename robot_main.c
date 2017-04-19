@@ -14,8 +14,8 @@
 
 int main(void)
 {
-	//DDRA = 255;
-	//PORTA = 255;
+	DDRA = 0b01100000;
+	PORTA = 0b01100000;
 	
 	speed=100;
 	OCR0= CAS10;
