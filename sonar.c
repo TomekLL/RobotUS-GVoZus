@@ -63,7 +63,7 @@ unsigned int read_sonar(){
  
     TCNT1=0;                            // reset timer
     TCCR1B |= (1<<CS10);              // start 16 bit timer with no prescaler
-    TIMSK1 |= (1<<TOIE1);             // enable overflow interrupt on timer1
+    TIMSK |= (1<<TOIE1);             // enable overflow interrupt on timer1
     overFlowCounter=0;                  // reset overflow counter
     sei();                              // enable global interrupts
  
