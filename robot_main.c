@@ -29,8 +29,8 @@ int main(void)
 	sei();
 	while (1) 
 	{
-		speedL = 0;
-		speedR = 0;
+		int speedL = 0;
+		int speedR = 0;
 		hodnota = USART_receive_1byte();
 		
 		if(hodnota & 64) {
