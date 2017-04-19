@@ -11,7 +11,6 @@
  */ 
 
 #include "robot.h"
-#include "sonar.h"
 
 int main(void)
 {
