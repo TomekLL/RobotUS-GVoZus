@@ -14,10 +14,13 @@
 
 int main(void)
 {
+	DDRA = 255;
+	PORTA = 255;
+	
 	speed=100;
 	OCR0= CAS10;
 	TCCR0=REZIM;
-	TIMSK |=(1<<OCIE0);			// lokalne povolenie prerusenia
+	//TIMSK |=(1<<OCIE0);			// lokalne povolenie prerusenia
 	//zapnutie USART spojenia
 	setUSART();
 	//aktivacia motorov
@@ -26,33 +29,46 @@ int main(void)
 	sei();
 	while (1) 
 	{
-		if(value == (unsigned char)8) 
-		{
-			//8 = 0b00001000 (stredovy senzor je aktivovany)
-			go(0,speed);	//pravy
-			go(1,speed); //lavy
-		} 
-		else if(value == (unsigned char)4)
-			{
-				//4 = 0b00000100
-				go(0,speed-15);
-				go(1,speed);
-			}
-			else if(value == (unsigned char)16) 
-				{
-					//16 = 0b00010000
-					go(0,speed);
-					go(1,speed-15);
-				}
+		speedL = 0;
+		speedR = 0;
+		hodnota = USART_receive_1byte();
+		
+		if((hodnota & 64) == (unsigned char) 64) {
+			speedL+=speed;
+		}
+		if((hodnota & 32) == (unsigned char) 32) {
+			speedL+=speed;
+		}
+		if((hodnota & 16) == (unsigned char) 16) {
+			speedL+=speed;
+		}
+		if((hodnota & 8) == (unsigned char) 8) {
+			speedL+=speed;
+			speedR+=speed;
+			sbi(PORTA, PA6);
+			sbi(PORTA, PA5);
+		} else {
+			cbi(PORTA, PA5);
+			cbi(PORTA, PA6);
+		}
+		if((hodnota & 4) == (unsigned char) 4) {
+			speedR+=speed;
+		}
+		if((hodnota & 2) == (unsigned char) 2) {
+			speedR+=speed;
+		}
+		if((hodnota & 1) == (unsigned char) 1) {
+			speedR+=speed;
+		}
+		go(0 , speedR);
+		go(1 , speedL);
 	}
 }
 // 	prerusenie volane cca kazdych 30ms
 ISR(TIMER0_COMP_vect)
 {
-	//init hodnoty value
-	unsigned char value = 0;
-	unsigned char distance = 0;
 	//zobratie hodnoty z USART spojenia
-	value = USART_receive_1byte();	
+	hodnota = USART_receive_1byte();	
 	distance = read_sonar();
 }
+
