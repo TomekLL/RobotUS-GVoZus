@@ -33,16 +33,16 @@ int main(void)
 		speedR = 0;
 		hodnota = USART_receive_1byte();
 		
-		if((hodnota & 64) == (unsigned char) 64) {
+		if(hodnota & 64) {
 			speedL+=speed;
 		}
-		if((hodnota & 32) == (unsigned char) 32) {
+		if(hodnota & 32) {
 			speedL+=speed;
 		}
-		if((hodnota & 16) == (unsigned char) 16) {
+		if(hodnota & 16) {
 			speedL+=speed;
 		}
-		if((hodnota & 8) == (unsigned char) 8) {
+		if(hodnota & 8) {
 			speedL+=speed;
 			speedR+=speed;
 			sbi(PORTA, PA6);
