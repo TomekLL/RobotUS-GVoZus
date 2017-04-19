@@ -10,11 +10,12 @@ uint16_t voltageBackground;
 uint16_t voltageForeground;
 //urcuje ci urcovaci cyklus prebehol(urcovanie voltage)
 bool voltageSet;
-
+//tenBit
+uint16_t tenBit;
 //hodnota ktoru skenujeme
 uint16_t checkingValue;
 //hodnota ktoru ideme odoslat
-unsigned char value;
+unsigned char sendingValue;
 //ratac cipov
 uint8_t counter;
 //zakladna hodnota admux
@@ -24,3 +25,4 @@ bool svieti;
 
 void sendValues();
 uint8_t getBool(uint16_t v);
+uint16_t getCheckingValue();
