@@ -15,7 +15,7 @@
 int main(void)
 {
 	DDRA = 0b01100000;
-	PORTA = 0b01100000;
+	//PORTA = 255;
 	
 	speed=100;
 	OCR0= CAS10;
@@ -26,7 +26,7 @@ int main(void)
 	//aktivacia motorov
 	nastav();
 	//globalne povolenie prerusenia
-	sei();
+	//sei();
 	while (1) 
 	{
 		speedL = 0;
@@ -60,8 +60,8 @@ int main(void)
 		if((hodnota & 1) == (unsigned char) 1) {
 			speedR+=speed;
 		}
-		go(0 , speedR);
-		go(1 , speedL);
+		//go(0 , speedR);
+		//go(1 , speedL);
 	}
 }
 // 	prerusenie volane cca kazdych 30ms
